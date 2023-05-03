@@ -1,28 +1,45 @@
+#include "promocion.h"
 class iventario{
     private:
+     
     protected:
+     promocion objeto;
+     string nombreempresa;
     public:
+     
+     iventario();
      string Usuarioinicial="fer";
      int contrasenainicial=1234;
-     inventario();
-     int darinventario();
+     //int darinventario();
 
 };
-class menu{
+class menu:protected iventario{
     public:
+     int hola=0;
      void menu123();
 };
 
-iventario::inventario(){};
+iventario::iventario(){
+    cout<<"Cual es el nombre de la empresa?"<<endl;
+    getline(cin,nombreempresa);
+}
 
 void menu::menu123(){
+    
     cout << "*************************************************"  <<endl;
-    cout << "*******       Menu de triangulo      *************" <<endl;
+    cout << "*******       Menu de "<<nombreempresa<< "    *************" <<endl;
     cout << "*************************************************"  <<endl;
     cout <<" 1) envio                                           "<<endl;
     cout <<" 2) pago                                            "<<endl;
     cout <<" 3) pedido                                          "<<endl;
     cout <<" 4) venta                                           "<<endl;
+    cout <<" 5) promociones                                     "<<endl;
+    cin>>hola;
+    if(hola==5){
+        cout<<"gi"<<endl;
+        objeto.menu();
+    }
+    //tal vez se podrian hacer clases por separado y de ahi entonces solo con una funcion,salga el menu de sus opciones y que se quiere hacer
 }
 class gestion_pedido{
     public:
