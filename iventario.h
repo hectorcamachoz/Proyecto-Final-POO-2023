@@ -1,72 +1,59 @@
-#include "promocion.h"
+// Clase padre
 class iventario{
-    private:
-     
     protected:
-     promocion objeto;
-     string nombreempresa;
+        int dinero;
     public:
-     
-     iventario();
-     string Usuarioinicial="fer";
-     int contrasenainicial=1234;
-     //int darinventario();
-
-};
-class menu:protected iventario{
-    public:
-     int hola=0;
-     void menu123();
+        iventario(int _dinero);
+        virtual void mostrarDinero();
+        virtual void gastar();
+        virtual float RegresarDinero();
+        ~iventario();
 };
 
-iventario::iventario(){
-    cout<<"Cual es el nombre de la empresa?"<<endl;
-    getline(cin,nombreempresa);
+// primera clase con herencia
+class envio  : public iventario{
+    public:
+        envio(int _dinero);// el dinero lo hereda de general
+        void mostrarDinero();
+        void gastar();
+        int regresarDinero();
+};
+
+// derivacion de funciones
+// Pruebas general
+iventario::iventario(int _dinero){
+    dinero = _dinero;
 }
 
-void menu::menu123(){
-    
-    cout << "*************************************************"  <<endl;
-    cout << "*******       Menu de "<<nombreempresa<< "    *************" <<endl;
-    cout << "*************************************************"  <<endl;
-    cout <<" 1) envio                                           "<<endl;
-    cout <<" 2) pago                                            "<<endl;
-    cout <<" 3) pedido                                          "<<endl;
-    cout <<" 4) venta                                           "<<endl;
-    cout <<" 5) promociones                                     "<<endl;
-    cin>>hola;
-    if(hola==5){
-        cout<<"gi"<<endl;
-        objeto.menu();
-    }
-    //tal vez se podrian hacer clases por separado y de ahi entonces solo con una funcion,salga el menu de sus opciones y que se quiere hacer
-}
-class gestion_pedido{
-    public:
-     void mostrar();
-};
-void gestion_pedido::mostrar(){
-    cout<<"Estas en pedidos"<<endl;
-}
-class gestion_envio{
-    public:
-     void mostrar();
-};
-void gestion_envio::mostrar(){
-    cout<<"Estas en envios"<<endl;
-}
-class gestion_venta{
-    public:
-     void mostrar();
-};
-void gestion_venta::mostrar(){
-    cout<<"Estas en ventas"<<endl;
-}
-class gestion_pago{
-    public:
-     void mostrar();
-};
-void gestion_pago::mostrar(){
-    cout<<"Estas en pagos"<<endl;
+void iventario::mostrarDinero(){
+    cout << "El dinero es " << dinero << endl;
 }
 
+void iventario::gastar(){
+    cout << "Gasto general";
+}
+
+float iventario::RegresarDinero(){
+    return dinero;
+}
+
+iventario::~iventario(){}
+
+
+// Probando 1
+envio::envio(int _dinero) : iventario(_dinero){
+    dinero = _dinero;
+}
+
+void envio::mostrarDinero(){
+    iventario::mostrarDinero();
+    cout << "Probando 1" << endl;
+}
+
+void envio::gastar(){
+    dinero = dinero - 10;
+}
+
+int envio::regresarDinero(){
+    return dinero;
+}
