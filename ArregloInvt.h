@@ -1,6 +1,11 @@
 // crear una clase donde se pueda abrir, imprimir, modificar el inventario y guardarlo en un archivo de texto
 #include "fstream" // archivos
 #include "iomanip" // setw();
+#include "cctype" // para eliminar espacios en blanco
+#include "algorithm"
+#include "iostream"
+#include "string"
+using namespace std;
 const int COLUMNAS = 3; // se define el tamanio del arreglo
 const int FILAS = 3;   
 
@@ -30,6 +35,9 @@ ArregloInvt::ArregloInvt(){
        while(getline(archivo, nombre, ',')){// tomamos todo hasta la , / siempre y cuando exista un valor en el archivo esto avanza
             getline(archivo, cantidad, ',');
             getline(archivo, costo, ',');
+            nombre.erase(std::remove_if(nombre.begin(), nombre.end(), ::isspace), nombre.end()); // se eliminan espacios en blanco
+            cantidad.erase(std::remove_if(cantidad.begin(), cantidad.end(), ::isspace), cantidad.end()); // se eliminan espacios en blanco
+            costo.erase(std::remove_if(costo.begin(), costo.end(), ::isspace), costo.end()); // se eliminan espacios en blanco
             invent[contador][0] = nombre;
             invent[contador][1] = cantidad;
             invent[contador][2] = costo;
@@ -43,26 +51,6 @@ ArregloInvt::ArregloInvt(){
 }
 
 /*void ArregloInvt::arreglo(){
-    ifstream archivo;  // instanciando la clase para leer archivos
-    string nombre, cantidad, costo; // agrupación
-    int contador = 0;
-
-    archivo.open("inventario.txt");
-    if(archivo.is_open()){ //validamos si está abierto
-       // vamos a leer cada columna de datos separados por la ","
-       // guardar cada columna en el arreglo//////////////////////////////////////////////////////////
-       while(getline(archivo, nombre, ',')){// tomamos todo hasta la , / siempre y cuando exista un valor en el archivo esto avanza
-            getline(archivo, cantidad, ',');
-            getline(archivo, costo, ',');
-            invent[contador][0] = nombre;
-            invent[contador][1] = cantidad;
-            invent[contador][2] = costo;
-            contador += 1;
-        }
-       archivo.close(); //cerramos el archivo
-    } else {
-        cout << "No se pudo abrir el archivo!" << endl;
-    }
 }*/
 
 void ArregloInvt::imprimirInvt(){
@@ -74,6 +62,7 @@ void ArregloInvt::imprimirInvt(){
         for (j=0; j< 3; j++){
             cout << invent[i][j] << "\t\t" ;
         }
+        cout << endl;
     }
 }
 
@@ -84,7 +73,9 @@ void ArregloInvt::guardar(string nombreArchivo){
                 for (int j = 0; j < COLUMNAS; j++) {
                     archivo << invent[i][j] << ",";
                 }
-                //archivo << endl;
+                if(i <=2 ){
+                    archivo << endl;
+                }
             }
             archivo.close();
             cout << "Datos guardados exitosamente." << endl;
@@ -125,6 +116,8 @@ void ArregloInvt::menuInvt(){
 			        break;
                 case '2':
                     // opcion para cambiar el nombre de los productos
+                    system("cls");
+                    cout << "-----Modificar nombre-----" << endl;
                     cout << "A que producto le quiere cambiar el nombre? ";
                     cin >> nombre;
                     for(int i = 0; i < 3; i++){
