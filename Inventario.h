@@ -3,23 +3,95 @@
 #include "string"
 #include "iomanip"//para setw
 using namespace std;
+#include "promocion.h"
 class Inventario{
      private:
        vector<string>nombres;//de articulos
        vector<int>cantidades;
        vector<float>costos;
+     protected:
+      string nombreempresa;
+      double dinero;
 
      public:
+      promocion Promociones;
       Inventario();
+      Inventario(double _dinero);
       void imprimirInventario();
       void guardarInventario();
       void cargarInventario();
       void modificarInventario();
       void menuInventario();
       void borrarVectores();
+      //metodos para el dinero
+      virtual void mostrarDinero();
+      virtual void gastar();
+      virtual double RegresarDinero();
+      ~Inventario();
 };
-Inventario::Inventario(){
+class Menu:protected Inventario{
+    public:
+     void MenuGeneral();
+};
+class GestionEnvio:public Inventario{
+    public:
+       GestionEnvio(double _dinero);//dinero heredado de general
+       void mostrarDinero();
+       void gastar();
+       double regresarDinero();
+      
+};
+//Derivaciones de gestiondeenvio-----------------------------
+GestionEnvio::GestionEnvio(double _dinero):Inventario(_dinero){
+    dinero=_dinero;
+}
+void GestionEnvio::mostrarDinero(){
+    Inventario::mostrarDinero();
+    cout << "Probando 1" << endl;
+}
+
+void GestionEnvio::gastar(){
+    dinero = dinero - 10;
+}
+
+double GestionEnvio::regresarDinero(){
+    return dinero;
+}
+//Derivacion de Menu---------------------------------------------------------
+
+void Menu::MenuGeneral(){
+    int eleccion=0;
     
+    cout << "*************************************************"  <<endl;
+    cout << "*******       Menu de "<<nombreempresa<< "    *************" <<endl;
+    cout << "*************************************************"  <<endl;
+    cout <<" 1) Envio                                           "<<endl;
+    cout <<" 2) Pago                                            "<<endl;
+    cout <<" 3) Pedido                                          "<<endl;
+    cout <<" 4) Inventario                                           "<<endl;
+    cout <<" 5) Promociones                                     "<<endl;
+    cout<<"Que gestión eliges"<<endl;
+    cin>>eleccion;
+    if(eleccion==4){
+        system("cls");
+        cin.ignore();
+        Inventario::menuInventario();
+    }
+
+    if(eleccion==5){
+        system("cls");
+        cin.ignore();
+        Promociones.menu();
+    }
+}
+
+//Derivacion de Inventario-----------------------------------------------
+Inventario::Inventario(){
+    cout<<"Nombre de la empresa"<<endl;
+    getline(cin,nombreempresa);
+}
+Inventario::Inventario(double _dinero){
+    dinero = _dinero;
 }
 void Inventario::imprimirInventario(){
     cout << " ----------- Inventario ----------- "<< endl;
@@ -207,3 +279,17 @@ void Inventario::borrarVectores(){
     //para llamar a este metodo al finalizar el programa y se borre lo que haya 
     //en los vectores
 }
+void Inventario::mostrarDinero(){
+    cout << "El dinero es " << dinero << endl;
+}
+
+void Inventario::gastar(){
+    cout << "Gasto general";
+}
+
+double Inventario::RegresarDinero(){
+    return dinero;
+}
+
+
+Inventario::~Inventario(){}
